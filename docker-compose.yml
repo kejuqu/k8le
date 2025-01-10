@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: roles_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./fe-mng
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - be-fastpy
+      - be-nestjs
+    networks:
+      - app-network
+
+  be-fastpy:
+    build:
+      context: ./be-fastpy
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    networks:
+      - app-network
+
+  be-nestjs:
+    build:
+      context: ./be-nestjs
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./be-nestjs/.env
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,63 @@
+# Project specific ignores
+## Backend FastPy
+/be-fastpy/**/venv/
+/be-fastpy/**/__pycache__/
+/be-fastpy/**/.pytest_cache/
+
+## Backend NestJS
+/be-nestjs/dist/
+/be-nestjs/build/
+/be-nestjs/coverage/
+/be-nestjs/.nyc_output/
+/be-nestjs/.temp/
+/be-nestjs/.tmp/
+/be-nestjs/pids/
+
+## Frontend Management
+/fe-mng/dist/
+/fe-mng/src/.umi*/
+/fe-mng/.umi*/
+/fe-mng/.mfsu/
+/fe-mng/.swc/
+/fe-mng/.umirc.local.ts
+/fe-mng/config/config.local.ts
+
+# Dependencies
+**/node_modules/
+**/.env*
+**/env/
+**/ENV/
+**/env.bak/
+**/venv.bak/
+
+# Logs
+**/logs/
+**/*.log
+**/npm-debug.log*
+**/pnpm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/lerna-debug.log*
+
+# Runtime & Temp
+**/*.pid
+**/*.seed
+**/*.pid.lock
+**/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# IDE & Editor
+**/.idea/
+**/.vscode/*
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+# OS
+**/.DS_Store

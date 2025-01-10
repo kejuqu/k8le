@@ -1,0 +1,46 @@
+{
+  "private": true,
+  "author": "JakeQuc <jakequc@163.com>",
+  "scripts": {
+    "build": "max build",
+    "compile": "formatjs compile src/temp/extractLocale.json --out-file src/locales/zh-CN.json",
+    "dev": "cross-env MOCK=none max dev",
+    "extract": "formatjs extract 'src/**/*.tsx' --out-file src/temp/extractLocale.json",
+    "format": "prettier --cache --write .",
+    "gen-i18n": "esno gen-i18n.ts",
+    "i18n": "npm run extract && npm run compile",
+    "postinstall": "max setup",
+    "prepare": "husky",
+    "setup": "max setup",
+    "start": "npm run dev",
+    "mock": "npm run dev -- --mock"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.3.7",
+    "@ant-design/pro-components": "^2.7.9",
+    "@umijs/max": "^4.4.4",
+    "antd": "^5.18.0",
+    "babel-plugin-react-intl": "^8.2.25",
+    "click-to-react-component": "^1.1.0",
+    "dayjs": "^1.11.13",
+    "lodash": "^4.17.21",
+    "react-intl": "^6.6.8"
+  },
+  "devDependencies": {
+    "@formatjs/cli": "^6.2.12",
+    "@types/lodash": "^4.17.14",
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "babel-cli": "^6.26.0",
+    "cross-env": "^7.0.3",
+    "esno": "^4.7.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.3.0",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.5.0",
+    "tailwindcss": "^3",
+    "typescript": "^5.4.5"
+  }
+}

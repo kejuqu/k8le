@@ -1,0 +1,42 @@
+# Project specific ignores
+## Backend FastPy
+/be-fastpy/**/venv/
+/be-fastpy/**/__pycache__/
+/be-fastpy/**/.pytest_cache/
+
+## Backend NestJS
+/be-nestjs/dist/
+/be-nestjs/node_modules/
+/be-nestjs/build/
+/be-nestjs/coverage/
+/be-nestjs/.nyc_output/
+/be-nestjs/.temp/
+/be-nestjs/.tmp/
+/be-nestjs/pids/
+/be-nestjs/.env
+/be-nestjs/.env.development.local
+/be-nestjs/.env.test.local
+/be-nestjs/.env.production.local
+/be-nestjs/.env.local
+
+## Frontend Management
+/fe-mng/dist/
+/fe-mng/node_modules/
+/fe-mng/src/.umi/
+/fe-mng/src/.umi-production/
+/fe-mng/src/.umi-test/
+/fe-mng/.umi/
+/fe-mng/.umi-production/
+/fe-mng/.umi-test/
+/fe-mng/.mfsu/
+/fe-mng/.swc/
+/fe-mng/.umirc.local.ts
+/fe-mng/config/config.local.ts
+/fe-mng/.env.local
+
+# Dependencies
+**/node_modules/
+**/.env*
+**/env/
+**/venv/
+**/dist/
