@@ -37,9 +37,9 @@ services:
       context: ./be-fastpy
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "9090:9090"
     environment:
-      - PORT=8080
+      - PORT=9090
     networks:
       - app-network
 
@@ -48,7 +48,7 @@ services:
       context: ./be-nestjs
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "9091:9091"
     networks:
       - app-network
     depends_on:

@@ -1,6 +1,6 @@
 export const localGoUrl = 'http://127.0.0.1:8079';
-export const pyServerUrl = 'http://localhost:8080';
-export const nestServerUrl = 'http://localhost:8081';
+export const pyServerUrl = 'http://localhost:9090';
+export const nestServerUrl = 'http://localhost:9091';
 
 const getProxyConf = (targetUrl: string) => {
   return {

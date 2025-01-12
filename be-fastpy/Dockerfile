@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 设置默认端口
-ENV PORT=8080
+ENV PORT=9090
 
 EXPOSE ${PORT}
 

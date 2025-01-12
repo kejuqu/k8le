@@ -31,6 +31,6 @@ RUN pnpm install --prod
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 8080
+EXPOSE 9091
 
 CMD ["node", "dist/main"]
