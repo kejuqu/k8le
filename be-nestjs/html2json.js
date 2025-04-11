@@ -1,5 +1,4 @@
-
-const cheerio = require("cheerio");
+const cheerio = require('cheerio');
 
 function html2json({ html }) {
   const $ = cheerio.load(html);
@@ -8,31 +7,46 @@ function html2json({ html }) {
   // 通用解析逻辑
   const commonParse = () => {
     // 1. 解析 <img> 标签
-    $("img").each((_, el) => {
+    $('img').each((_, el) => {
       const $img = $(el);
-      addUrl($img.attr("src"));
-      parseSrcset($img.attr("srcset"));
+      addUrl($img.attr('src'));
+      parseSrcset($img.attr('srcset'));
     });
 
     // 2. 解析 <picture> 中的 <source>
-    $("picture source").each((_, el) => {
-      parseSrcset($(el).attr("srcset"));
+    $('picture source').each((_, el) => {
+      parseSrcset($(el).attr('srcset'));
     });
 
     // 3. 解析 CSS 背景图
-    $("[style]").each((_, el) => {
-      const bg = $(el).css("background-image");
+    $('[style]').each((_, el) => {
+      const bg = $(el).css('background-image');
       const url = bg?.match(/url\(["']?(.*?)["']?\)/)?.[1];
       addUrl(url);
     });
 
+    // 增强的 CSS 背景图解析
+    const parseBackgroundImage = (styleAttr) => {
+      // 处理包含空格和非标准写法的 background-image
+      const bgMatch = styleAttr.match(
+        /background\s*-\s*image\s*:\s*url\(["']?(.*?)["']?\)/i,
+      );
+      return bgMatch ? bgMatch[1] : null;
+    };
+
+    // 修改后的 CSS 背景图解析
+    $('[style]').each((_, el) => {
+      const styleAttr = $(el).attr('style') || '';
+      const url = parseBackgroundImage(styleAttr);
+      addUrl(url);
+    });
     // 4. 解析 meta 标签
     [
       'meta[property="og:image"]',
       'meta[name="twitter:image"]',
       'meta[itemprop="image"]',
     ].forEach((selector) => {
-      addUrl($(selector).attr("content"));
+      addUrl($(selector).attr('content'));
     });
 
     // 5. 解析 JSON-LD
@@ -52,28 +66,28 @@ function html2json({ html }) {
     });
 
     // 6. 解析其他资源标签
-    ["a[href]", "object[data]", "embed[src]", "video[poster]"].forEach(
+    ['a[href]', 'object[data]', 'embed[src]', 'video[poster]'].forEach(
       (selector) => {
         $(selector).each((_, el) => {
           const $el = $(el);
-          const attr = selector.includes("a")
-            ? "href"
-            : selector.includes("object")
-              ? "data"
-              : selector.includes("embed")
-                ? "src"
-                : "poster";
+          const attr = selector.includes('a')
+            ? 'href'
+            : selector.includes('object')
+              ? 'data'
+              : selector.includes('embed')
+                ? 'src'
+                : 'poster';
           const url = $el.attr(attr);
           if (isImageUrl(url)) addUrl(url);
         });
-      }
+      },
     );
   };
 
   // 辅助方法
   const parseSrcset = (srcset) => {
     if (!srcset) return;
-    srcset.split(",").forEach((entry) => {
+    srcset.split(',').forEach((entry) => {
       const url = entry.trim().split(/\s+/)[0];
       addUrl(url);
     });
@@ -95,7 +109,7 @@ function html2json({ html }) {
   // 返回格式化结果
   return {
     imgs: Array.from(results).map((link) => ({
-      link: link.startsWith("//") ? `https:${link}` : link,
+      link: link.startsWith('//') ? `https:${link}` : link,
     })),
   };
 }
@@ -111,10 +125,10 @@ const getUrlsContent = (urls) => {
           };
         })
         .catch((error) => {
-          console.error("Error fetching data from url: ", url, error);
+          console.error('Error fetching data from url: ', url, error);
           return null;
-        })
-    )
+        }),
+    ),
   );
 };
 
@@ -122,7 +136,7 @@ const printUrlsContent = async () => {
   const jdDetailUrls = [];
 
   const tbDetailUrls = [
-    "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%8E%8B%E5%8A%9B%E5%AE%98%E6%96%B9%E6%97%97%E8%88%B0%E5%BA%97&num_iid=599776705275",
+    'https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%8E%8B%E5%8A%9B%E5%AE%98%E6%96%B9%E6%97%97%E8%88%B0%E5%BA%97&num_iid=599776705275',
     // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%89%A9%E9%B8%A3%E6%97%97%E8%88%B0%E5%BA%97&num_iid=845500903947",
     // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BF%9F%E6%B0%8F%E4%B8%89%E7%82%89%E6%97%97%E8%88%B0%E5%BA%97&num_iid=755426133706",
     // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BF%9F%E6%B0%8F%E4%B8%89%E7%82%89%E6%97%97%E8%88%B0%E5%BA%97&num_iid=39826993708",
@@ -136,7 +150,7 @@ const printUrlsContent = async () => {
   ];
 
   const extraUrls = [
-    "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=bettycgq&num_iid=22915860347",
+    'https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=bettycgq&num_iid=22915860347',
   ];
 
   const testHtml = `<!DOCTYPE html>
@@ -186,19 +200,19 @@ const printUrlsContent = async () => {
 
 </html>`;
 
-  const resJson = html2json({ html: testHtml });
+  // const resJson = html2json({ html: testHtml });
 
-  console.log(`resJjson】：${JSON.stringify(resJson, null, 2)}`);
-  //   const res = await getUrlsContent(tbDetailUrls);
+  // console.log(`resJjson】：${JSON.stringify(resJson, null, 2)}`);
 
-  //   for (let i = 0; i < res.length; i++) {
-  //     const { htmlPromise } = res[i];
-  //     const html = await htmlPromise;
-  //     const resJson = html2json({ html });
+  const res = await getUrlsContent(tbDetailUrls);
 
-  //     console.log(`resJjson${i}】：${JSON.stringify(resJson, null, 2)}`);
-  //   }
+  for (let i = 0; i < res.length; i++) {
+    const { htmlPromise } = res[i];
+    const html = await htmlPromise;
+    const resJson = html2json({ html });
+
+    console.log(`resJjson${i}】：${JSON.stringify(resJson, null, 2)}`);
+  }
 };
 
 printUrlsContent();
-
