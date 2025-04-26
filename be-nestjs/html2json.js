@@ -135,19 +135,7 @@ const getUrlsContent = (urls) => {
 const printUrlsContent = async () => {
   const jdDetailUrls = [];
 
-  const tbDetailUrls = [
-    'https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%8E%8B%E5%8A%9B%E5%AE%98%E6%96%B9%E6%97%97%E8%88%B0%E5%BA%97&num_iid=599776705275',
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%89%A9%E9%B8%A3%E6%97%97%E8%88%B0%E5%BA%97&num_iid=845500903947",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BF%9F%E6%B0%8F%E4%B8%89%E7%82%89%E6%97%97%E8%88%B0%E5%BA%97&num_iid=755426133706",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BF%9F%E6%B0%8F%E4%B8%89%E7%82%89%E6%97%97%E8%88%B0%E5%BA%97&num_iid=39826993708",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=bettycgq&num_iid=22915860347",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E5%85%A8%E5%8F%8B%E5%AE%B6%E5%B1%85%E5%AE%98%E6%96%B9%E6%97%97%E8%88%B0%E5%BA%97&num_iid=680927761028",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E5%85%A8%E5%8F%8B%E5%AE%B6%E5%B1%85%E5%AE%98%E6%96%B9%E6%97%97%E8%88%B0%E5%BA%97&num_iid=798848111132",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BE%8E%E7%9A%84%E5%8E%A8%E6%88%BF%E5%B0%8F%E5%AE%B6%E7%94%B5%E6%97%97%E8%88%B0%E5%BA%97&num_iid=846960466714",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BE%8E%E7%9A%84%E5%8E%A8%E6%88%BF%E5%B0%8F%E5%AE%B6%E7%94%B5%E6%97%97%E8%88%B0%E5%BA%97&num_iid=841809535014",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BE%8E%E7%9A%84%E5%8E%A8%E5%8D%AB%E6%97%97%E8%88%B0%E5%BA%97&num_iid=711198078815",
-    // "https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=%E7%BE%8E%E7%9A%84%E5%86%B0%E7%AE%B1%E6%97%97%E8%88%B0%E5%BA%97&num_iid=652340404900",
-  ];
+  const tbDetailUrls = [];
 
   const extraUrls = [
     'https://qsg5o0.faas.xiaoduoai.com/getTbDetailByNameAndId?usernick=bettycgq&num_iid=22915860347',
