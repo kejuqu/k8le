@@ -100,6 +100,6 @@ if __name__ == "__main__":
     import uvicorn
     print("🚀 服务启动中...")
     # 从环境变量获取端口号，如果没有设置则默认使用 8080
-    port = int(os.getenv("PORT", 8080))
+    port = int(os.getenv("PORT", 8090))
     uvicorn.run(app, host="0.0.0.0", port=port)
     print("🚀 服务启动成功！")

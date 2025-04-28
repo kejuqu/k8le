@@ -71,7 +71,7 @@ docker login
 
 ```bash
 # .env 文件示例
-PORT=8080
+PORT=8090
 ```
 
 然后执行运行脚本：

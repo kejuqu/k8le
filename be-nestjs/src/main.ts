@@ -10,7 +10,7 @@ async function bootstrap() {
   console.log('port: ', port);
 
   await app.listen(port, () => {
-    console.log(`🚀🚀🚀 应用已启动，监听端口: ${port}`);
+    console.log(`🚀🚀🚀 应用已启动，本地地址: http://localhost:${port}`);
   });
 }
 bootstrap();

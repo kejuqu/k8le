@@ -1,4 +1,5 @@
 # Docker Compose 使用指南
+> ⚠️： 记得开 科学上网工具
 
 ## 基本原则
 
@@ -53,3 +54,6 @@ docker compose down
 # 重新构建并启动
 docker compose up -d --build
 ```
+
+
+## 常见问题
