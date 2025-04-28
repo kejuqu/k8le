@@ -20,10 +20,11 @@ services:
       timeout: 5s
       retries: 5
 
+
   nextjs-app:
     build:
       context: ./nextjs-app
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     networks:
@@ -31,6 +32,27 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ./nextjs-app:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+    command: pnpm dev
+
+  # nextjs-app:
+  #   build:
+  #     context: ./nextjs-app
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
   frontend:
     build:
