@@ -24,7 +24,7 @@ type FormProProps<
     TContext,
     TTransformedValues
   >;
-  useFormProps: UseFormProps<TFieldValues, TContext, TTransformedValues>;
+  useFormProps?: UseFormProps<TFieldValues, TContext, TTransformedValues>;
   ref?: RefObject<{
     form: UseFormReturn<TFieldValues, TContext, TTransformedValues>;
   }> | null;

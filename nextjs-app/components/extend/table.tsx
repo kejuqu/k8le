@@ -36,6 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// TODO: need to implement the table component
 const data: Payment[] = [
   {
     id: "m5gr84i9",

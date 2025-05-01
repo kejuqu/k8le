@@ -12,3 +12,6 @@
 export type MakeOptional<Type, Keys extends keyof Type> = {
   [K in keyof Type]: K extends Keys ? Type[K] | undefined | null : Type[K];
 };
+
+
+export type FirstParam<T extends (...args: any[]) => any> = Parameters<T>[0];

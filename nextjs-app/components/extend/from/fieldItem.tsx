@@ -30,6 +30,7 @@ type FormFieldItemProps<
   label?: React.ReactNode;
   controlProps?: FormControlProps;
   descProps?: ParagraphProps;
+  inputProps?: React.ComponentProps<typeof Input>;
   desc?: React.ReactNode;
   // gen control children if needed (eg. Input, Select, etc.)
   genItem?: ({
@@ -51,6 +52,7 @@ export default function FormFieldItem({
   labelProps = {},
   controlProps = {},
   formItemProps = {},
+  inputProps = {},
   genItem,
   render,
   ...formFieldProps
@@ -66,7 +68,7 @@ export default function FormFieldItem({
               {label && <FormLabel {...labelProps}>{label}</FormLabel>}
               <FormControl {...controlProps}>
                 {genItem?.(fieldStore) || (
-                  <Input placeholder="Please input" {...field} />
+                  <Input placeholder="Please input" {...field} {...inputProps} />
                 )}
               </FormControl>
               {desc && <FormDescription {...descProps}>{desc}</FormDescription>}

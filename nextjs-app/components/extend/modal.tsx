@@ -17,8 +17,8 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const modalElements = [
-  "trigger", // 可完全覆盖 DialogTrigger， 但是 tigger 中必须包含 DialogTrigger 详见 https://ui.shadcn.com/docs/components/dialog#notes
-  "triggerChild",
+  "customTrigger", // 可完全覆盖 DialogTrigger， 但是 tigger 中必须包含 DialogTrigger 详见 https://ui.shadcn.com/docs/components/dialog#notes
+  "trigger",
   "title",
   "description",
   "footer",
@@ -40,9 +40,9 @@ export type ModalElementProps = {
 export type ModalProps = ModalElementProps & DialogRootProps;
 
 export default function Modal({
-  trigger,
+  customTrigger,
   triggerProps = {},
-  triggerChild,
+  trigger,
 
   title,
   titleProps = {},
@@ -60,10 +60,8 @@ export default function Modal({
 }: ModalProps) {
   return (
     <Dialog {...dialogProps}>
-      {trigger ||
-        (triggerChild && (
-          <DialogTrigger {...triggerProps}>{triggerChild}</DialogTrigger>
-        ))}
+      {customTrigger ||
+        (trigger && <DialogTrigger {...triggerProps}>{trigger}</DialogTrigger>)}
       <DialogContent {...contentProps}>
         <DialogHeader {...headerProps}>
           {title && <DialogTitle {...titleProps}>{title}</DialogTitle>}

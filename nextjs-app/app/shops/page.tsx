@@ -22,9 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -40,10 +37,12 @@ import { useRequest } from "ahooks";
 
 import { Shop } from "@/types/product";
 import { createBrowserSupabase } from "@/utils/supabase/browser";
-import SelectPro from "@/components/extend/selectPro";
+import ProSelect from "@/components/extend/proSelect";
 import { SelectValue } from "@/components/ui/select";
 import { unionBy } from "lodash";
 import { ShopActionbar } from "./components/shopActionbar";
+import ShopInfoModal from "./components/shopInfoModal";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 function Filter({ column }: { column: Column<any, unknown> }) {
   const { filterVariant, options } = (column.columnDef.meta ?? {}) as any;
@@ -53,15 +52,18 @@ function Filter({ column }: { column: Column<any, unknown> }) {
   const filterMap: Record<string, () => React.ReactElement> = {
     select: () => {
       return (
-        <SelectPro
+        <ProSelect
+          triggerProps={{
+            className: " w-40",
+          }}
           onValueChange={(v) => {
             column.setFilterValue(v);
           }}
           value={columnFilterValue?.toString()}
           options={options}
         >
-          <SelectValue placeholder="Select a timezone" />
-        </SelectPro>
+          <SelectValue placeholder="Select a platform" />
+        </ProSelect>
       );
     },
   };
@@ -70,9 +72,19 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 }
 
 export default function ShopsPage() {
-  const { data: shopRes } = useRequest(async () => {
+  const { data: shopRes, refresh: refreshShops } = useRequest(async () => {
     const supabase = await createBrowserSupabase();
     return supabase.from("shops").select("*");
+  });
+
+  const shopPlatformOptions = unionBy(
+    shopRes?.data,
+    (item) => item.platform
+  )?.map((s) => {
+    return {
+      label: s.platform,
+      value: s.platform,
+    };
   });
 
   const columns: ColumnDef<Shop>[] = [
@@ -111,12 +123,7 @@ export default function ShopsPage() {
       ),
       meta: {
         filterVariant: "select",
-        options: unionBy(shopRes?.data, (item) => item.platform)?.map((s) => {
-          return {
-            label: s.platform,
-            value: s.platform,
-          };
-        }),
+        options: shopPlatformOptions,
       },
     },
     {
@@ -128,7 +135,13 @@ export default function ShopsPage() {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        return <ShopActionbar item={row.original} />;
+        return (
+          <ShopActionbar
+            item={row.original}
+            onRefreshShops={refreshShops}
+            shopPlatformOptions={shopPlatformOptions}
+          />
+        );
       },
     },
   ];
@@ -172,32 +185,43 @@ export default function ShopsPage() {
           }
           className="max-w-sm"
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="ml-auto flex gap-2">
+          <ShopInfoModal
+            shopPlatformOptions={shopPlatformOptions}
+            onRefreshShops={refreshShops}
+            openTrigger={
+              <DialogTrigger asChild>
+                <Button>Add Shop</Button>
+              </DialogTrigger>
+            }
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

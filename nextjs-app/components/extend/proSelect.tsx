@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectTriggerProps,
   SelectRootProps,
+  SelectContentProps,
 } from "@/components/ui/select";
 
 type TSelectItemWithLabel = {
@@ -26,10 +27,12 @@ export const renderSelectItem = (options: TSelectItemWithLabel[]) => {
     const { options: childrens, label, ...rest } = option || {};
 
     if (childrens?.length) {
-      <SelectGroup key={option.key || option.value}>
-        <SelectLabel>{label}</SelectLabel>
-        {renderSelectItem(childrens)}
-      </SelectGroup>;
+      return (
+        <SelectGroup key={option.key || option.value}>
+          <SelectLabel>{label}</SelectLabel>
+          {renderSelectItem(childrens)}
+        </SelectGroup>
+      );
     }
 
     return (
@@ -43,19 +46,29 @@ export const renderSelectItem = (options: TSelectItemWithLabel[]) => {
 export type SelectProps = {
   triggerProps?: SelectTriggerProps;
   options: TSelectItemWithLabel[];
+  contentProps?: SelectContentProps;
+  onChange?: SelectRootProps["onValueChange"];
 } & SelectRootProps;
 
-export default function SelectPro({
+export default function ProSelect({
   triggerProps = {},
   options,
   children,
+  contentProps = {},
+  onChange,
   ...selectProps
 }: SelectProps) {
   return (
-    <Select {...selectProps}>
+    <Select
+      {...selectProps}
+      onValueChange={(v) => {
+        onChange?.(v);
+        selectProps.onValueChange?.(v);
+      }}
+    >
       <SelectTrigger {...triggerProps}>{children}</SelectTrigger>
       {!!options?.length ? (
-        <SelectContent>
+        <SelectContent {...contentProps}>
           {renderSelectItem(options as unknown as TSelectItemWithLabel[])}
         </SelectContent>
       ) : (

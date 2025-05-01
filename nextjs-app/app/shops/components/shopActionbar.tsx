@@ -15,14 +15,27 @@ import {
 import Modal from "@/components/extend/modal";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Shop } from "@/types/product";
-import { ProForm, useProForm } from "@/components/extend/from/proForm";
+import { ProForm, useProForm } from "@/components/extend/from";
 import FormFieldItem from "@/components/extend/from/fieldItem";
+import { createBrowserSupabase } from "@/utils/supabase/browser";
+import { toast } from "sonner";
+import { useRequest } from "ahooks";
+import { ExtendMenuItem, ProDropdown } from "@/components/extend/proDropdown";
+import ProSelect from "@/components/extend/proSelect";
+import { SelectValue } from "@radix-ui/react-select";
+import ShopInfoModal from "./shopInfoModal";
 
 type ShopActionbarProps = {
   item: Shop;
+  shopPlatformOptions: { label: string; value: string }[];
+  onRefreshShops: () => void;
 };
 
-export const ShopActionbar = ({ item }: ShopActionbarProps) => {
+export const ShopActionbar = ({
+  item,
+  shopPlatformOptions,
+  onRefreshShops,
+}: ShopActionbarProps) => {
   const formSchema = z.object({
     name: z.string().min(5, {
       message: "Shop name must be at least 5 characters.",
@@ -35,7 +48,37 @@ export const ShopActionbar = ({ item }: ShopActionbarProps) => {
       .max(255, {
         message: "Address must be at least 5 characters.",
       }),
+    platform: z.string().min(1, {
+      message: "Platform is required.",
+    }),
   });
+  const { run: updateShop, loading: updateShopLoading } = useRequest(
+    async (values: z.infer<typeof formSchema>) => {
+      const supabase = await createBrowserSupabase();
+      return supabase.from("shops").update(values).eq("id", item.id);
+    },
+    {
+      manual: true,
+      onSuccess: () => {
+        toast("Shop updated successfully!");
+        onRefreshShops();
+      },
+    }
+  );
+
+  const { run: deleteShop, loading: deleteShopLoading } = useRequest(
+    async (id: string) => {
+      const supabase = await createBrowserSupabase();
+      return supabase.from("shops").delete().eq("id", id);
+    },
+    {
+      manual: true,
+      onSuccess: () => {
+        toast("Shop deleted successfully!");
+        onRefreshShops();
+      },
+    }
+  );
 
   const form = useProForm({
     formSchema,
@@ -45,20 +88,100 @@ export const ShopActionbar = ({ item }: ShopActionbarProps) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    updateShop(values);
+    console.log("should update the shop", values);
   }
 
+  const dropdownItems: ExtendMenuItem[] = [
+    {
+      label: "Actions",
+    },
+    {
+      separator: true,
+    },
+    {
+      customRender: () => {
+        return (
+          <DialogTrigger asChild>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+          </DialogTrigger>
+        );
+      },
+    },
+    {
+      children: "Delete the shop",
+      onClick: () => {
+        deleteShop(item.id);
+      },
+      disabled: deleteShopLoading,
+    },
+    {
+      children: "Copy the address of shop",
+      onClick: () => {
+        if (item?.address) {
+          navigator.clipboard.writeText(item?.address);
+        }
+      },
+    },
+    // {
+    //   trigger: "trigger",
+    //   items: [
+    //     {
+    //       children: "sub 1",
+    //       onClick: () => {
+    //         if (item?.address) {
+    //           navigator.clipboard.writeText(item?.address);
+    //         }
+    //       },
+    //     },
+    //     {
+    //       children: "sub 2",
+    //       onClick: () => {
+    //         if (item?.address) {
+    //           navigator.clipboard.writeText(item?.address);
+    //         }
+    //       },
+    //     },
+    //     {
+    //       trigger: "trigger",
+    //       items: [
+    //         {
+    //           children: "sub 1",
+    //           onClick: () => {
+    //             if (item?.address) {
+    //               navigator.clipboard.writeText(item?.address);
+    //             }
+    //           },
+    //         },
+    //         {
+    //           children: "sub 2",
+    //           onClick: () => {
+    //             if (item?.address) {
+    //               navigator.clipboard.writeText(item?.address);
+    //             }
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+  ];
+
+  const dropItem = (
+    <ProDropdown items={dropdownItems} contentProps={{ align: "end" }}>
+      <Button variant="ghost" className="h-8 w-8 p-0">
+        <MoreHorizontal />
+      </Button>
+    </ProDropdown>
+  );
+
   return (
-    <Modal
-      footer={
-        <div className="flex w-full justify-end">
-          <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
-            Save
-          </Button>
-        </div>
-      }
-      title={`Edit Shop`}
-      trigger={
+    <ShopInfoModal
+      shop={item}
+      shopPlatformOptions={shopPlatformOptions}
+      onRefreshShops={onRefreshShops}
+      openTrigger={
+        // dropItem
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -66,12 +189,21 @@ export const ShopActionbar = ({ item }: ShopActionbarProps) => {
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DialogTrigger asChild>
               <DropdownMenuItem>Edit</DropdownMenuItem>
             </DialogTrigger>
+            <DropdownMenuItem
+              onClick={() => {
+                deleteShop(item.id);
+              }}
+              disabled={deleteShopLoading}
+            >
+              Delete the shop
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
                 if (item?.address) {
@@ -84,19 +216,6 @@ export const ShopActionbar = ({ item }: ShopActionbarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
       }
-    >
-      <ProForm
-        form={form}
-        formSchema={formSchema}
-        useFormProps={{
-          defaultValues: {
-            name: item.name,
-          },
-        }}
-      >
-        <FormFieldItem label="Name" name="name" control={form.control} />
-        <FormFieldItem label="Address" name="address" control={form.control} />
-      </ProForm>
-    </Modal>
+    />
   );
 };
