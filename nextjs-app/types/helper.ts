@@ -14,4 +14,4 @@ export type MakeOptional<Type, Keys extends keyof Type> = {
 };
 
 
-export type FirstParam<T extends (...args: any[]) => any> = Parameters<T>[0];
+export type GetCompProps<T extends (...args: any[]) => any> = Parameters<T>[0];

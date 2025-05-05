@@ -14,9 +14,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FirstParam } from "@/types/helper";
+import { GetCompProps } from "@/types/helper";
 
-type MenuItemProps = FirstParam<typeof DropdownMenuItem>;
+type MenuItemProps = GetCompProps<typeof DropdownMenuItem>;
 
 export type ExtendMenuItem = {
   items?: ExtendMenuItem[];
@@ -24,20 +24,20 @@ export type ExtendMenuItem = {
   customRender?: (item?: ExtendMenuItem) => React.ReactNode;
   // sub menu trigger
   shortcut?: React.ReactNode;
-  shortcutProps?: FirstParam<typeof DropdownMenuShortcut>;
+  shortcutProps?: GetCompProps<typeof DropdownMenuShortcut>;
   trigger?: React.ReactNode | ((item?: ExtendMenuItem) => React.ReactNode);
-  subMenuTriggerProps?: FirstParam<typeof DropdownMenuSubTrigger>;
+  subMenuTriggerProps?: GetCompProps<typeof DropdownMenuSubTrigger>;
   // label
   label?: React.ReactNode;
-  labelProps?: FirstParam<typeof DropdownMenuLabel>;
+  labelProps?: GetCompProps<typeof DropdownMenuLabel>;
 
   // separator
   separator?: boolean;
-  separatorProps?: FirstParam<typeof DropdownMenuSeparator>;
+  separatorProps?: GetCompProps<typeof DropdownMenuSeparator>;
 
-  groupProps?: FirstParam<typeof DropdownMenuGroup>;
+  groupProps?: GetCompProps<typeof DropdownMenuGroup>;
 
-  subMenuContentProps?: FirstParam<typeof DropdownMenuSubContent>;
+  subMenuContentProps?: GetCompProps<typeof DropdownMenuSubContent>;
 } & MenuItemProps;
 
 export const renderMenuItems = (items: ExtendMenuItem[]) => {
@@ -112,10 +112,10 @@ export const renderMenuItems = (items: ExtendMenuItem[]) => {
 };
 
 type ProDropdownProps = {
-  contentProps: FirstParam<typeof DropdownMenuContent>;
+  contentProps: GetCompProps<typeof DropdownMenuContent>;
   items: ExtendMenuItem[];
-  triggerProps?: FirstParam<typeof DropdownMenuTrigger>;
-} & FirstParam<typeof DropdownMenu>;
+  triggerProps?: GetCompProps<typeof DropdownMenuTrigger>;
+} & GetCompProps<typeof DropdownMenu>;
 
 export function ProDropdown({
   items,

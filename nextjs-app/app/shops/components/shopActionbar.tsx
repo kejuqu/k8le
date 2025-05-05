@@ -181,40 +181,40 @@ export const ShopActionbar = ({
       shopPlatformOptions={shopPlatformOptions}
       onRefreshShops={onRefreshShops}
       openTrigger={
-        // dropItem
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
+        dropItem
+        // <DropdownMenu>
+        //   <DropdownMenuTrigger asChild>
+        //     <Button variant="ghost" className="h-8 w-8 p-0">
+        //       <span className="sr-only">Open menu</span>
+        //       <MoreHorizontal />
+        //     </Button>
+        //   </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-            </DialogTrigger>
-            <DropdownMenuItem
-              onClick={() => {
-                deleteShop(item.id);
-              }}
-              disabled={deleteShopLoading}
-            >
-              Delete the shop
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                if (item?.address) {
-                  navigator.clipboard.writeText(item?.address);
-                }
-              }}
-            >
-              Copy the address of shop
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        //   <DropdownMenuContent align="end">
+        //     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        //     <DropdownMenuSeparator />
+        //     <DialogTrigger asChild>
+        //       <DropdownMenuItem>Edit</DropdownMenuItem>
+        //     </DialogTrigger>
+        //     <DropdownMenuItem
+        //       onClick={() => {
+        //         deleteShop(item.id);
+        //       }}
+        //       disabled={deleteShopLoading}
+        //     >
+        //       Delete the shop
+        //     </DropdownMenuItem>
+        //     <DropdownMenuItem
+        //       onClick={() => {
+        //         if (item?.address) {
+        //           navigator.clipboard.writeText(item?.address);
+        //         }
+        //       }}
+        //     >
+        //       Copy the address of shop
+        //     </DropdownMenuItem>
+        //   </DropdownMenuContent>
+        // </DropdownMenu>
       }
     />
   );

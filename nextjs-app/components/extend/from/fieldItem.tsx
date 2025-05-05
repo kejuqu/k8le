@@ -1,5 +1,6 @@
 import {
   ControllerFieldState,
+  ControllerProps,
   ControllerRenderProps,
   FieldPath,
   FieldValues,
@@ -8,29 +9,29 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   FormControl,
-  FormControlProps,
   FormDescription,
   FormField,
-  FormFieldProps,
   FormItem,
-  FormItemProps,
   FormLabel,
-  FormLabelProps,
   FormMessage,
-  ParagraphProps,
 } from "@/components/ui/form";
-import { MakeOptional } from "@/types/helper";
+import { GetCompProps } from "@/types/helper";
+
+export type FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = ControllerProps<TFieldValues, TName>;
 
 type FormFieldItemProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
-  formItemProps?: FormItemProps;
-  labelProps?: FormLabelProps;
+  formItemProps?: GetCompProps<typeof FormItem>;
+  labelProps?: GetCompProps<typeof FormLabel>;
   label?: React.ReactNode;
-  controlProps?: FormControlProps;
-  descProps?: ParagraphProps;
-  inputProps?: React.ComponentProps<typeof Input>;
+  controlProps?: GetCompProps<typeof FormControl>;
+  descProps?: GetCompProps<typeof FormDescription>;
+  inputProps?: GetCompProps<typeof Input>;
   desc?: React.ReactNode;
   // gen control children if needed (eg. Input, Select, etc.)
   genItem?: ({
@@ -68,7 +69,11 @@ export default function FormFieldItem({
               {label && <FormLabel {...labelProps}>{label}</FormLabel>}
               <FormControl {...controlProps}>
                 {genItem?.(fieldStore) || (
-                  <Input placeholder="Please input" {...field} {...inputProps} />
+                  <Input
+                    placeholder="Please input"
+                    {...field}
+                    {...inputProps}
+                  />
                 )}
               </FormControl>
               {desc && <FormDescription {...descProps}>{desc}</FormDescription>}

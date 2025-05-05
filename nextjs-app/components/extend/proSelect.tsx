@@ -5,18 +5,17 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectItemTypeProps,
   SelectLabel,
   SelectTrigger,
-  SelectTriggerProps,
-  SelectRootProps,
-  SelectContentProps,
 } from "@/components/ui/select";
+import { GetCompProps } from "@/types/helper";
+
+type SelectItemProps = GetCompProps<typeof SelectItem>;
 
 type TSelectItemWithLabel = {
   options?: TSelectItemWithLabel[];
   label: React.ReactNode;
-} & SelectItemTypeProps;
+} & SelectItemProps;
 
 export const renderSelectItem = (options: TSelectItemWithLabel[]) => {
   if (!options?.length) {
@@ -43,10 +42,12 @@ export const renderSelectItem = (options: TSelectItemWithLabel[]) => {
   });
 };
 
+type SelectRootProps = GetCompProps<typeof Select>;
+
 export type SelectProps = {
-  triggerProps?: SelectTriggerProps;
+  triggerProps?: GetCompProps<typeof SelectTrigger>;
   options: TSelectItemWithLabel[];
-  contentProps?: SelectContentProps;
+  contentProps?: GetCompProps<typeof SelectContent>;
   onChange?: SelectRootProps["onValueChange"];
 } & SelectRootProps;
 

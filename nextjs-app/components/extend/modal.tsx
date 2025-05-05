@@ -1,19 +1,13 @@
 import {
   Dialog,
   DialogContent,
-  DialogContentProps,
   DialogDescription,
-  DialogDescriptionProps,
   DialogFooter,
-  DialogFooterProps,
   DialogHeader,
-  DialogHeaderProps,
-  DialogRootProps,
   DialogTitle,
-  DialogTitleProps,
   DialogTrigger,
-  DialogTriggerProps,
 } from "@/components/ui/dialog";
+import { GetCompProps } from "@/types/helper";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const modalElements = [
@@ -24,13 +18,15 @@ const modalElements = [
   "footer",
 ] as const;
 
+type DialogRootProps = GetCompProps<typeof Dialog>;
+
 type DialogType = {
-  triggerProps: DialogTriggerProps;
-  titleProps: DialogTitleProps;
-  descriptionProps: DialogDescriptionProps;
-  footerProps: DialogFooterProps;
-  contentProps: DialogContentProps;
-  headerProps: DialogHeaderProps;
+  triggerProps: GetCompProps<typeof DialogTrigger>;
+  titleProps: GetCompProps<typeof DialogTitle>;
+  descriptionProps: GetCompProps<typeof DialogDescription>;
+  footerProps: GetCompProps<typeof DialogFooter>;
+  contentProps: GetCompProps<typeof DialogContent>;
+  headerProps: GetCompProps<typeof DialogHeader>;
 };
 
 export type ModalElementProps = {
