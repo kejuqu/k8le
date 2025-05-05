@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { z } from "zod";
 import { RefObject } from "react";
+import { cn } from "@/lib/utils";
 
 type NativeFormProps = React.ComponentProps<"form">;
 
@@ -56,9 +57,9 @@ export function ProForm<
   return (
     <FormProvider {...form} {...formProviderProps}>
       <form
-        className="flex flex-col gap-6"
         onSubmit={form.handleSubmit(handleSubmit)}
         {...formProps}
+        className={cn("flex flex-col gap-6", formProps.className)}
       >
         {children}
       </form>

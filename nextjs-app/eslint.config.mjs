@@ -15,7 +15,16 @@ const eslintConfig = [
     rules: {
       "react-hooks/exhaustive-deps": "off",
       "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": "error",
     },
+    'import/order': [
+      'error',
+      {
+        groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+        newlinesBetween: "always", // 组间空行
+        alphabetize: { order: "asc" }, // 按字母排序
+      },
+    ],
   },
 ];
 

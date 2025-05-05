@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useRequest } from "ahooks";
 import { ExtendMenuItem, ProDropdown } from "@/components/extend/proDropdown";
 import ProSelect from "@/components/extend/proSelect";
+import { Textarea } from "@/components/ui/textarea";
 import { SelectValue } from "@radix-ui/react-select";
 
 export default function ShopInfoModal({
@@ -47,7 +48,7 @@ export default function ShopInfoModal({
     }),
   });
 
-  const { run: mutationShop, loading: updateShopLoading } = useRequest(
+  const { run: upsertShop, loading: upsertShopLoading } = useRequest(
     async (values: z.infer<typeof formSchema>) => {
       const supabase = await createBrowserSupabase();
       await supabase.from("shops").upsert(values);
@@ -77,7 +78,7 @@ export default function ShopInfoModal({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutationShop(values);
+    upsertShop(values);
     console.log("should update the shop", values);
   }
 
@@ -87,7 +88,7 @@ export default function ShopInfoModal({
       footer={
         <div className="flex w-full justify-end">
           <Button
-            disabled={updateShopLoading}
+            disabled={upsertShopLoading}
             type="submit"
             onClick={form.handleSubmit(onSubmit)}
           >
@@ -106,25 +107,40 @@ export default function ShopInfoModal({
           control={form.control}
           inputProps={{ hidden: true }}
         />
-        <FormFieldItem label="Name" name="name" control={form.control} />
-        <FormFieldItem label="Address" name="address" control={form.control} />
+        <div className="flex flex-row gap-4">
+          <FormFieldItem
+            label="Name"
+            name="name"
+            control={form.control}
+            formItemProps={{ className: "w-full" }}
+          />
+          <FormFieldItem
+            label="Platform"
+            name="platform"
+            formItemProps={{ className: "w-full" }}
+            control={form.control}
+            genItem={({ field }) => {
+              return (
+                <ProSelect
+                  triggerProps={{
+                    className: " w-full",
+                  }}
+                  {...field}
+                  options={shopPlatformOptions}
+                >
+                  <SelectValue placeholder="Select a platform" />
+                </ProSelect>
+              );
+            }}
+          />
+        </div>
         <FormFieldItem
-          label="Platform"
-          name="platform"
-          control={form.control}
           genItem={({ field }) => {
-            return (
-              <ProSelect
-                triggerProps={{
-                  className: " w-full",
-                }}
-                {...field}
-                options={shopPlatformOptions}
-              >
-                <SelectValue placeholder="Select a platform" />
-              </ProSelect>
-            );
+            return <Textarea {...field} />;
           }}
+          label="Address"
+          name="address"
+          control={form.control}
         />
       </ProForm>
     </Modal>

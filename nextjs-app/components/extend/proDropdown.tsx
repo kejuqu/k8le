@@ -22,7 +22,6 @@ export type ExtendMenuItem = {
   items?: ExtendMenuItem[];
   // render DropdownMenuLabel or DropdownMenuSeparator by customRender
   customRender?: (item?: ExtendMenuItem) => React.ReactNode;
-  // sub menu trigger
   shortcut?: React.ReactNode;
   shortcutProps?: GetCompProps<typeof DropdownMenuShortcut>;
   trigger?: React.ReactNode | ((item?: ExtendMenuItem) => React.ReactNode);
@@ -31,12 +30,14 @@ export type ExtendMenuItem = {
   label?: React.ReactNode;
   labelProps?: GetCompProps<typeof DropdownMenuLabel>;
 
-  // separator
+  // should show separator
   separator?: boolean;
   separatorProps?: GetCompProps<typeof DropdownMenuSeparator>;
 
+  // group props
   groupProps?: GetCompProps<typeof DropdownMenuGroup>;
 
+  // sub menu content props
   subMenuContentProps?: GetCompProps<typeof DropdownMenuSubContent>;
 } & MenuItemProps;
 
