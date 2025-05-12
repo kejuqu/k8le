@@ -17,7 +17,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { Shop } from "@/types/product";
 import { ProForm, useProForm } from "@/components/extend/from";
 import FormFieldItem from "@/components/extend/from/fieldItem";
-import { createBrowserSupabase } from "@/utils/supabase/browser";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { toast } from "sonner";
 import { useRequest } from "ahooks";
 import { ExtendMenuItem, ProDropdown } from "@/components/extend/proDropdown";
@@ -95,11 +95,14 @@ export const ShopActionbar = ({
   const dropdownItems: ExtendMenuItem[] = [
     {
       label: "Actions",
+      key: "actions",
     },
     {
       separator: true,
+      key: "separator",
     },
     {
+      key: "edit",
       customRender: () => {
         return (
           <DialogTrigger asChild>
@@ -109,6 +112,7 @@ export const ShopActionbar = ({
       },
     },
     {
+      key: "delete",
       children: "Delete the shop",
       onClick: () => {
         deleteShop(item.id);
@@ -116,6 +120,7 @@ export const ShopActionbar = ({
       disabled: deleteShopLoading,
     },
     {
+      key: "copy",
       children: "Copy the address of shop",
       onClick: () => {
         if (item?.address) {

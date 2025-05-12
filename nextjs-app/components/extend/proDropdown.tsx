@@ -2,29 +2,41 @@ import * as React from "react";
 
 import {
   DropdownMenu,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { GetCompProps } from "@/types/helper";
 
 type MenuItemProps = GetCompProps<typeof DropdownMenuItem>;
 
-export type ExtendMenuItem = {
-  items?: ExtendMenuItem[];
+type DropdownTypeMenu = "default" | "checkbox" | "radio";
+
+type DropdownTypeMenuMap = {
+  default: typeof DropdownMenuItem;
+  checkbox: typeof DropdownMenuCheckboxItem;
+  radio: typeof DropdownMenuRadioItem;
+};
+
+export type ExtendMenuItem<T extends DropdownTypeMenu = "default"> = {
+  items?: ExtendMenuItem<T>[];
+  key?: React.Key;
   // render DropdownMenuLabel or DropdownMenuSeparator by customRender
-  customRender?: (item?: ExtendMenuItem) => React.ReactNode;
+  customRender?: (item?: ExtendMenuItem<T>) => React.ReactNode;
   shortcut?: React.ReactNode;
   shortcutProps?: GetCompProps<typeof DropdownMenuShortcut>;
-  trigger?: React.ReactNode | ((item?: ExtendMenuItem) => React.ReactNode);
+  trigger?: React.ReactNode | ((item?: ExtendMenuItem<T>) => React.ReactNode);
   subMenuTriggerProps?: GetCompProps<typeof DropdownMenuSubTrigger>;
   // label
   label?: React.ReactNode;
@@ -39,9 +51,11 @@ export type ExtendMenuItem = {
 
   // sub menu content props
   subMenuContentProps?: GetCompProps<typeof DropdownMenuSubContent>;
-} & MenuItemProps;
+} & DropdownTypeMenuMap[T];
 
-export const renderMenuItems = (items: ExtendMenuItem[]) => {
+export const renderMenuItems = <T extends DropdownTypeMenu = "default">(
+  items: ExtendMenuItem<T>[]
+) => {
   if (!items?.length) {
     return null;
   }
@@ -65,12 +79,13 @@ export const renderMenuItems = (items: ExtendMenuItem[]) => {
       groupProps = {},
 
       subMenuContentProps = {},
+      key,
       ...rest
     } = option || {};
 
     if (childrens?.length) {
       return (
-        <DropdownMenuGroup key={option.key} {...groupProps}>
+        <DropdownMenuGroup key={key} {...groupProps}>
           <DropdownMenuSub {...subMenuTriggerProps}>
             {trigger && (
               <DropdownMenuSubTrigger>
@@ -92,15 +107,28 @@ export const renderMenuItems = (items: ExtendMenuItem[]) => {
     }
 
     if (label) {
-      return <DropdownMenuLabel {...labelProps}>{label}</DropdownMenuLabel>;
+      return (
+        <DropdownMenuLabel key={key} {...labelProps}>
+          {label}
+        </DropdownMenuLabel>
+      );
     }
 
     if (separator) {
-      return <DropdownMenuSeparator {...separatorProps} />;
+      return <DropdownMenuSeparator key={key} {...separatorProps} />;
     }
 
+    // TODO: add checkbox,radio type render
+    // if (type === "checkbox") {
+    //   return <DropdownMenuCheckboxItem key={key} {...rest} />;
+    // }
+
+    // if (type === "radio") {
+    //   return <DropdownMenuRadioItem key={key} {...rest} />;
+    // }
+
     return (
-      <DropdownMenuItem key={rest.key} {...rest}>
+      <DropdownMenuItem key={key} {...rest}>
         {rest.children}
         {!!shortcut && (
           <DropdownMenuShortcut {...shortcutProps}>
@@ -114,8 +142,10 @@ export const renderMenuItems = (items: ExtendMenuItem[]) => {
 
 type ProDropdownProps = {
   contentProps: GetCompProps<typeof DropdownMenuContent>;
-  items: ExtendMenuItem[];
+  items?: ExtendMenuItem[];
   triggerProps?: GetCompProps<typeof DropdownMenuTrigger>;
+  customContent?: GetCompProps<typeof DropdownMenuContent>["children"];
+  type?: DropdownTypeMenu;
 } & GetCompProps<typeof DropdownMenu>;
 
 export function ProDropdown({
@@ -123,6 +153,8 @@ export function ProDropdown({
   contentProps = {},
   triggerProps = {},
   children,
+  customContent,
+  type = "default",
   ...props
 }: ProDropdownProps) {
   return (
@@ -131,7 +163,7 @@ export function ProDropdown({
         {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent {...contentProps}>
-        {renderMenuItems(items)}
+        {customContent || renderMenuItems(items || [])}
       </DropdownMenuContent>
     </DropdownMenu>
   );

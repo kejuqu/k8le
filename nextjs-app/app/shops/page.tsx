@@ -36,7 +36,7 @@ import {
 import { useRequest } from "ahooks";
 
 import { Shop } from "@/types/product";
-import { createBrowserSupabase } from "@/utils/supabase/browser";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
 import ProSelect from "@/components/extend/proSelect";
 import { SelectValue } from "@/components/ui/select";
 import { unionBy } from "lodash";

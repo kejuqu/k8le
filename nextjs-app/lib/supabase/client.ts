@@ -20,4 +20,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
  * 如果你在 SSR 应用中直接使用它，Auth 状态可能和服务端不一致
  *
  */
-export const clientSupabase = createClient(supabaseUrl, supabaseAnonKey);
+export const createSupabaseClient = () => {
+  return createClient(supabaseUrl, supabaseAnonKey);
+};

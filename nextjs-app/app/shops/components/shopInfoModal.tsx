@@ -10,7 +10,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { Shop } from "@/types/product";
 import { ProForm, useProForm } from "@/components/extend/from";
 import FormFieldItem from "@/components/extend/from/fieldItem";
-import { createBrowserSupabase } from "@/utils/supabase/browser";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
 import { toast } from "sonner";
 import { useRequest } from "ahooks";
 import { ExtendMenuItem, ProDropdown } from "@/components/extend/proDropdown";
