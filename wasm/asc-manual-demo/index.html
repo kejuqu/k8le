@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 为了不用编译，直接使用 esm 特性来加载（vite 已经默认开启）
+    esm 特性：将代码分割为独立的模块（.js 文件），每个模块可包含变量、函数、类等，实现封装和复用。 
+    -->
+    <script type="module">
+      import { add } from "./build/release.js";
+
+      //  performance 做一个性能的评估
+      performance.mark("wasm_start");
+      console.log(add(1, 2));
+      performance.mark("wasm_end");
+      performance.measure("wasm_time", "wasm_start", "wasm_end");
+
+      console.log(performance.getEntriesByName("wasm_time"));
+
+      function add_inweb(a, b) {
+        let res = 0;
+        for (let i = 0; i < 100000000; i++) {
+          res += a;
+        }
+
+        return res + b;
+      }
+
+      performance.mark("js_start");
+      console.log(add_inweb(1, 2));
+      performance.mark("js_end");
+      performance.measure("js_time", "js_start", "js_end");
+
+      console.log(performance.getEntriesByName("js_time"));
+    </script>
+    <div>wasm</div>
+  </body>
+</html>

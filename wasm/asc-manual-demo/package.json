@@ -1,0 +1,20 @@
+{
+  "name": "asc-demo",
+  "version": "1.0.0",
+  "description": "--- theme: orange highlight: atelier-sulphurpool-dark ---",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "asbuild:release": "asc assembly/index.ts --target release",
+    "start": "pnpm run asbuild:release && http-server -t -1",
+    "dev2": "pnpm run asbuild:release && serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assemblyscript": "^0.28.2",
+    "http-server": "^14.1.1",
+    "serve": "^14.2.4"
+  }
+}

@@ -1,4 +1,5 @@
 # Docker Compose 使用指南
+
 > ⚠️： 记得开 科学上网工具
 
 ## 基本原则
@@ -11,15 +12,15 @@
 
 ## 常用命令
 
-| 命令 | 说明 |
-|------|------|
-| `docker compose up --build` | 构建并启动服务，即使镜像已经存在 |
-| `docker compose up` | 如果镜像存在，则使用已构建的镜像启动服务；如果镜像不存在，则构建并启动服务 |
-| `docker compose build --no-cache` | 构建镜像，不使用缓存 |
-| `docker compose build` | 构建镜像，使用缓存 |
-| `docker compose down` | 停止并移除服务，删除容器、网络和卷 |
-| `docker compose down --volumes` | 停止并移除服务，删除容器、网络和卷 |
-| `docker compose down --remove-orphans` | 停止并移除服务，删除未被其他服务依赖的容器 |
+| 命令                                   | 说明                                                                       |
+| -------------------------------------- | -------------------------------------------------------------------------- |
+| `docker compose up --build`            | 构建并启动服务，即使镜像已经存在                                           |
+| `docker compose up`                    | 如果镜像存在，则使用已构建的镜像启动服务；如果镜像不存在，则构建并启动服务 |
+| `docker compose build --no-cache`      | 构建镜像，不使用缓存                                                       |
+| `docker compose build`                 | 构建镜像，使用缓存                                                         |
+| `docker compose down`                  | 停止并移除服务，删除容器、网络和卷                                         |
+| `docker compose down --volumes`        | 停止并移除服务，删除容器、网络和卷                                         |
+| `docker compose down --remove-orphans` | 停止并移除服务，删除未被其他服务依赖的容器                                 |
 
 ## 开发建议
 
