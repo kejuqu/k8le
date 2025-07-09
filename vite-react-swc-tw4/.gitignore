@@ -10,3 +10,9 @@ count.txt
 .output
 .vinxi
 count.txt
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
