@@ -14,7 +14,10 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QObject
 from PyQt6.QtGui import QFont, QIcon, QTextCursor
 
 from .virtual_keyboard import VirtualKeyboard
-from ..speech2text import SpeechRecognizer
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from speech2text import SpeechRecognizer
 
 
 class RecognitionThread(QThread):
